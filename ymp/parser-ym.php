@@ -42,26 +42,26 @@ class ParserYM {
         return $result;
     }
 
-    public function parseSpecificationPage($page) {
+    /*****************************************************************/
+    // Парсинг страницы характеристик товара. В параметр - URL
+    /*****************************************************************/
+    public function parseSpecificationPageFromURL($url) {
+        $page = $this->loadURL($url);
+        return $this->parseSpecificationPage($page);
+    }
+    
+    /*****************************************************************/
+    // Парсинг страницы характеристик товара. В параметр - текст страницы
+    /*****************************************************************/
+    private function parseSpecificationPage($page) {
         $dom = new simple_html_dom();
         $dom->load($page);
         $specification = array();
 
-        //mark & model - <h1>
-        $elements = $dom->find('h1');
-        if (!$elements) {
-            echo "<HR>ERROR! NO TAG H1!<HR>";
-            return 0;
-        }
-        $h1 = strip_tags($elements[0]->plaintext);
-        $ppos = strpos($h1, ' ');
-        $specification['mark'] = substr($h1, 0, $ppos);
-        $specification['model'] = substr($h1, $ppos + 1);
-
         //specifications
         $table = $dom->find('table[class=b-properties]');
         if (!$table) {
-            echo "<HR>ERROR! NO TAG TABLE11!<HR>";
+            error("NO TAG table[class=b-properties]!");
             //error_log("<HR>ERROR! NO TAG TABLE11!<HR>");
             return 0;
         }
@@ -86,22 +86,21 @@ class ParserYM {
         }
         $specification[$spec_group] = $specs;
 
-        //var_dump($specification);
-
         return $specification;
     }
 
-    public function parseMainPageFromURL($url)
-    {
+    /*****************************************************************/
+    // Парсинг главной страницы товара. В параметр - URL
+    /*****************************************************************/
+    public function parseMainPageFromURL($url) {
         $page = $this->loadURL($url);
-        return $this->parseMainPageFromPage($page);
+        return $this->parseMainPage($page);
     }
     
-   
     /*****************************************************************/
     // Парсинг главной страницы товара. В параметр - текст страницы
     /*****************************************************************/
-    private function parseMainPageFromPage($page) {
+    private function parseMainPage($page) {
         $dom = new simple_html_dom();
         $dom->load($page);
         $product = array();
@@ -111,7 +110,7 @@ class ParserYM {
         //<a class="b-breadcrumbs__link" href="/guru.xmlhid=91020">ASUS</a></div>
         $elements = $dom->find('div[class=b-breadcrumbs]');
         if (!$elements) {
-            error("ERROR! NO TAG div[class=b-breadcrumbs]!");
+            error("NO TAG div[class=b-breadcrumbs]!");
             return 0;
         }
         $product['product_type'] = $elements[0]->children(0)->plaintext;

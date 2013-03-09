@@ -9,6 +9,8 @@
 require_once 'parser-ym.php';
 require_once 'parser.php';
 require_once 'error.php';
+require_once 'dbsimple.php';
+
 
 include('lib/simple_html_dom.php'); // подключаем Simple HTML DOM
 

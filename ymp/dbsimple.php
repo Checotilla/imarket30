@@ -5,13 +5,14 @@
 require_once "./lib/config.php";
 require_once "DbSimple/Generic.php";
 
+//$DB = new DbSimple_Mysql();
 // Подключаемся к БД.
 //$DB = DbSimple_Generic::connect("mysql://mysqluser:mysqlpassword@localhost/test_shop");
 // Подключаемся к БД.
-$DATABASE = DbSimple_Generic::connect('mysql://root:@localhost/test_shop');
+$DB = DbSimple_Generic::connect('mysql://root:@localhost/test_shop');
 
 // Устанавливаем обработчик ошибок.
-$DATABASE->setErrorHandler('databaseErrorHandler');
+$DB->setErrorHandler('databaseErrorHandler');
 
 // Код обработчика ошибок SQL.
 function databaseErrorHandler($message, $info)
@@ -24,5 +25,16 @@ function databaseErrorHandler($message, $info)
 	echo "</pre>";
 	exit();
 }
+
+$DB->setLogger('myLogger');
+
+function myLogger($db, $sql)
+{
+  $caller = $db->findLibraryCaller();
+  $tip = "at ".@$caller['file'].' line '.@$caller['line'];
+  // Печатаем запрос (конечно, Debug_HackerConsole лучше)
+  echo "<xmp title=\"$tip\">"; print_r($sql); echo "</xmp>";
+}
+
 
 ?>
