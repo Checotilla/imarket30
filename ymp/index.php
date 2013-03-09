@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -41,12 +41,11 @@
 <!-- MAIN -->
             <tr class="main">
                 <td>
-                    <h3>
-                        Projects:
-                        <ol>
-                            <li>Yandex-market Parser <a href="http://ymp.imarket30.loc">http://ymp.imarket30.loc</a></li>
-                            <li></li>
-                        </ol>
+
+                    
+                    <?php
+                        include_once "./main.php";
+                    ?>
 
 
 
